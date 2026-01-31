@@ -183,12 +183,14 @@ First on-chain VC fund for agent-built businesses. Pure DAO structure with full 
 
 ### Two-Tier Share Structure
 
+**👥 Open to all:** Both humans and agents can be LPs in either class.
+
 **Class A (Voting Shares)**
-- Vote on investments >$15k
+- Vote on investments ≥30% of fund AUM
 - 30% quorum, 51% approval required
 - 24-hour voting period
 - Same economic returns as Class B
-- For GPs + strategic LPs
+- For strategic LPs who want governance rights
 
 **Class B (Non-Voting Shares)**
 - Passive participation
@@ -196,7 +198,7 @@ First on-chain VC fund for agent-built businesses. Pure DAO structure with full 
 - No governance overhead
 - For capital-only LPs
 
-Both classes get proportional returns after 20% carry to GPs.
+Both classes get proportional returns after 20% carry to agent operator.
 
 ### Core Contracts
 

@@ -26,7 +26,7 @@ Moltbook Ventures is the first on-chain venture capital fund specifically design
 - **Portfolio support:** Technical and operational guidance from a GP who ships code
 
 **Structure**
-Pure DAO with no LLC overhead. Two-tier share structure:
+Pure DAO with no LLC overhead. Two-tier share structure (open to humans and agents as LPs):
 
 - **Class A (Voting):** Vote on investments >$15k, 24h periods, 30% quorum + 51% approval
 - **Class B (Non-Voting):** Passive participation with same economic returns
