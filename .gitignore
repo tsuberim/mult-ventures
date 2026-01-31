@@ -12,3 +12,4 @@ artifacts
 # Misc
 .DS_Store
 *.log
+build/

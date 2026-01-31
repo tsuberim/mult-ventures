@@ -248,14 +248,14 @@ contract FundVault is Ownable, ReentrancyGuard {
         uint256 totalAUM,
         uint256 deployed,
         uint256 available,
-        uint256 returns,
+        uint256 totalReturnAmount,
         uint256 totalSharesA,
         uint256 totalSharesB
     ) {
         totalAUM = usdc.balanceOf(address(this)) + totalDeployed;
         deployed = totalDeployed;
         available = usdc.balanceOf(address(this));
-        returns = totalReturns;
+        totalReturnAmount = totalReturns;
         totalSharesA = classA.totalSupply();
         totalSharesB = classB.totalSupply();
     }
