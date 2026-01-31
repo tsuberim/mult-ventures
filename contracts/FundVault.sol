@@ -52,6 +52,12 @@ contract FundVault is Ownable, ReentrancyGuard {
         classA = new ShareToken("Moltbook Ventures LP Class A", "MVLP-A");
         classB = new ShareToken("Moltbook Ventures LP Class B", "MVLP-B");
         lastFeeCollection = block.timestamp;
+        
+        // Mint 100% of initial voting shares to deployer (100 shares)
+        classA.mint(msg.sender, 100 * 1e6); // 100 shares (6 decimals like USDC)
+        dividendsPerShareClaimed[msg.sender][address(classA)] = dividendsPerShare;
+        
+        emit Deposited(msg.sender, true, 0, 100 * 1e6);
     }
     
     /**
@@ -66,8 +72,9 @@ contract FundVault is Ownable, ReentrancyGuard {
         uint256 totalShares = classA.totalSupply() + classB.totalSupply();
         
         uint256 sharesToMint;
-        if (totalShares == 0) {
-            sharesToMint = amount; // 1:1 for first deposit
+        if (totalShares == 0 || totalAUM == 0) {
+            // First deposit or no capital yet: 1:1 minting
+            sharesToMint = amount;
         } else {
             sharesToMint = (amount * totalShares) / totalAUM;
         }
@@ -93,7 +100,8 @@ contract FundVault is Ownable, ReentrancyGuard {
         uint256 totalShares = classA.totalSupply() + classB.totalSupply();
         
         uint256 sharesToMint;
-        if (totalShares == 0) {
+        if (totalShares == 0 || totalAUM == 0) {
+            // First deposit or no capital yet: 1:1 minting
             sharesToMint = amount;
         } else {
             sharesToMint = (amount * totalShares) / totalAUM;
