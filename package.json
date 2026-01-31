@@ -18,9 +18,13 @@
   },
   "homepage": "https://github.com/tsuberim/mult-ventures#readme",
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^4.0.4",
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@openzeppelin/contracts": "^5.4.0",
+    "chai": "^6.2.2",
     "dotenv": "^17.2.3",
+    "ethers": "^6.16.0",
     "hardhat": "^3.1.5"
   },
   "type": "module"

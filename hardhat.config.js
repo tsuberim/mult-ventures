@@ -1,7 +1,4 @@
-import "hardhat";
-import dotenv from "dotenv";
-
-dotenv.config();
+import "@nomicfoundation/hardhat-toolbox";
 
 /** @type import('hardhat/config').HardhatUserConfig */
 export default {
