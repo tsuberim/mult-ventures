@@ -27,8 +27,8 @@ contract FundVault is Ownable, ReentrancyGuard {
     
     // Per-share dividend tracking (cumulative)
     uint256 public dividendsPerShare; // Scaled by 1e18
-    mapping(address => uint256) public dividendsPerShareClaimed; // Last claimed value per LP
-    mapping(address => uint256) public pendingDividends; // Unclaimed dividends
+    // LP → ShareToken address → last claimed dividends per share
+    mapping(address => mapping(address => uint256)) public dividendsPerShareClaimed;
     
     struct Investment {
         address target;
@@ -63,23 +63,21 @@ contract FundVault is Ownable, ReentrancyGuard {
         require(amount > 0, "Amount must be > 0");
         
         ShareToken shareToken = isClassA ? classA : classB;
-        uint256 totalUSDC = usdc.balanceOf(address(this));
+        uint256 totalAUM = usdc.balanceOf(address(this)) + totalDeployed; // Use total AUM, not just vault balance
         uint256 totalShares = classA.totalSupply() + classB.totalSupply();
         
         uint256 sharesToMint;
         if (totalShares == 0) {
             sharesToMint = amount; // 1:1 for first deposit
         } else {
-            sharesToMint = (amount * totalShares) / totalUSDC;
+            sharesToMint = (amount * totalShares) / totalAUM;
         }
         
         require(usdc.transferFrom(msg.sender, address(this), amount), "Transfer failed");
         shareToken.mint(msg.sender, sharesToMint);
         
-        // New LPs start with current dividend level (don't get historical dividends)
-        if (dividendsPerShareClaimed[msg.sender] == 0) {
-            dividendsPerShareClaimed[msg.sender] = dividendsPerShare;
-        }
+        // Always set claimed level to current (prevents double-claiming)
+        dividendsPerShareClaimed[msg.sender][address(shareToken)] = dividendsPerShare;
         
         emit Deposited(msg.sender, isClassA, amount, sharesToMint);
     }
@@ -131,6 +129,7 @@ contract FundVault is Ownable, ReentrancyGuard {
         
         inv.exited = true;
         inv.returnAmount = returnAmount;
+        totalDeployed -= inv.amount; // Decrease deployed capital on exit
         totalReturns += returnAmount;
         
         // Calculate profit and carry
@@ -190,12 +189,12 @@ contract FundVault is Ownable, ReentrancyGuard {
         uint256 shares = shareToken.balanceOf(msg.sender);
         require(shares > 0, "No shares held");
         
-        // Calculate pending dividends
-        uint256 lastClaimed = dividendsPerShareClaimed[msg.sender];
+        // Calculate pending dividends for this share class
+        uint256 lastClaimed = dividendsPerShareClaimed[msg.sender][address(shareToken)];
         uint256 newDividends = (shares * (dividendsPerShare - lastClaimed)) / 1e18;
         
         if (newDividends > 0) {
-            dividendsPerShareClaimed[msg.sender] = dividendsPerShare;
+            dividendsPerShareClaimed[msg.sender][address(shareToken)] = dividendsPerShare;
             require(usdc.transfer(msg.sender, newDividends), "Transfer failed");
         }
     }
@@ -210,7 +209,7 @@ contract FundVault is Ownable, ReentrancyGuard {
         uint256 shares = shareToken.balanceOf(lp);
         if (shares == 0) return 0;
         
-        uint256 lastClaimed = dividendsPerShareClaimed[lp];
+        uint256 lastClaimed = dividendsPerShareClaimed[lp][address(shareToken)];
         return (shares * (dividendsPerShare - lastClaimed)) / 1e18;
     }
     
@@ -238,7 +237,7 @@ contract FundVault is Ownable, ReentrancyGuard {
         uint256 totalShares = classA.totalSupply() + classB.totalSupply();
         if (totalShares == 0) return 1e18;
         
-        uint256 nav = usdc.balanceOf(address(this)) + totalDeployed;
+        uint256 nav = usdc.balanceOf(address(this)) + totalDeployed; // Total AUM
         return (nav * 1e18) / totalShares;
     }
     
