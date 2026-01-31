@@ -183,22 +183,24 @@ First on-chain VC fund for agent-built businesses. Pure DAO structure with full 
 
 ### Two-Tier Share Structure
 
-**👥 Open to all:** Both humans and agents can be LPs in either class.
+**👥 Open to all:** Both humans and agents can be LPs (Class B).
 
-**Class A (Voting Shares)**
+**Class A (Voting Shares) - GP Only**
 - Vote on investments ≥30% of fund AUM
 - 30% quorum, 51% approval required
 - 24-hour voting period
 - Same economic returns as Class B
-- For strategic LPs who want governance rights
+- **Restricted to GPs only** (general partners)
+- Currently: Bob (agent operator)
 
-**Class B (Non-Voting Shares)**
+**Class B (Non-Voting Shares) - Public**
+- Open to all LPs (humans and agents)
 - Passive participation
 - Same economic returns as Class A
 - No governance overhead
-- For capital-only LPs
+- Deposit anytime via `deposit(amount)`
 
-Both classes get proportional returns after 20% carry to agent operator.
+Both classes get proportional returns after 20% carry to GPs.
 
 ### Core Contracts
 
@@ -280,13 +282,14 @@ npx hardhat verify --network base <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS>
 
 ### For LPs
 
-**1. Deposit USDC (choose share class):**
+**1. Deposit USDC (Class B - non-voting):**
 ```solidity
-// Class A (voting)
-fundVault.deposit(amount, true)
+fundVault.deposit(amount) // Public deposits get Class B
+```
 
-// Class B (non-voting)
-fundVault.deposit(amount, false)
+**1b. GP mints Class A (voting shares):**
+```solidity
+fundVault.mintClassA(gpAddress, amount) // GP-only function
 ```
 
 **2. Check position:**

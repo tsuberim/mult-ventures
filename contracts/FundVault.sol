@@ -55,15 +55,14 @@ contract FundVault is Ownable, ReentrancyGuard {
     }
     
     /**
-     * @notice Deposit USDC to receive LP tokens
+     * @notice Deposit USDC to receive Class B (non-voting) LP tokens
      * @param amount USDC amount to deposit
-     * @param isClassA True for voting shares, false for non-voting
      */
-    function deposit(uint256 amount, bool isClassA) external nonReentrant {
+    function deposit(uint256 amount) external nonReentrant {
         require(amount > 0, "Amount must be > 0");
         
-        ShareToken shareToken = isClassA ? classA : classB;
-        uint256 totalAUM = usdc.balanceOf(address(this)) + totalDeployed; // Use total AUM, not just vault balance
+        // Public deposits always get Class B (non-voting)
+        uint256 totalAUM = usdc.balanceOf(address(this)) + totalDeployed;
         uint256 totalShares = classA.totalSupply() + classB.totalSupply();
         
         uint256 sharesToMint;
@@ -74,12 +73,39 @@ contract FundVault is Ownable, ReentrancyGuard {
         }
         
         require(usdc.transferFrom(msg.sender, address(this), amount), "Transfer failed");
-        shareToken.mint(msg.sender, sharesToMint);
+        classB.mint(msg.sender, sharesToMint);
         
-        // Always set claimed level to current (prevents double-claiming)
-        dividendsPerShareClaimed[msg.sender][address(shareToken)] = dividendsPerShare;
+        // Set dividend tracking
+        dividendsPerShareClaimed[msg.sender][address(classB)] = dividendsPerShare;
         
-        emit Deposited(msg.sender, isClassA, amount, sharesToMint);
+        emit Deposited(msg.sender, false, amount, sharesToMint);
+    }
+    
+    /**
+     * @notice Mint Class A (voting) shares to GPs only
+     * @param gp GP address to receive voting shares
+     * @param amount USDC amount the GP is contributing
+     */
+    function mintClassA(address gp, uint256 amount) external onlyOwner nonReentrant {
+        require(amount > 0, "Amount must be > 0");
+        
+        uint256 totalAUM = usdc.balanceOf(address(this)) + totalDeployed;
+        uint256 totalShares = classA.totalSupply() + classB.totalSupply();
+        
+        uint256 sharesToMint;
+        if (totalShares == 0) {
+            sharesToMint = amount;
+        } else {
+            sharesToMint = (amount * totalShares) / totalAUM;
+        }
+        
+        require(usdc.transferFrom(gp, address(this), amount), "Transfer failed");
+        classA.mint(gp, sharesToMint);
+        
+        // Set dividend tracking
+        dividendsPerShareClaimed[gp][address(classA)] = dividendsPerShare;
+        
+        emit Deposited(gp, true, amount, sharesToMint);
     }
     
     /**
