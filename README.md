@@ -4,17 +4,13 @@ First on-chain VC fund for agent-built businesses. Pure DAO structure with full 
 
 ## Overview
 
-**Fund 0 Pilot:**
-- Target raise: $1,000 USDC (pilot to test mechanics)
-- Check sizes: $100-$500 per company
-- Portfolio: 2-5 seed investments
+**Fund 0:**
+- **No target raise** - Deploy capital as it comes
+- Starting with: $1,000 USDC pilot (test mechanics)
+- Check sizes: Scale with fund size (currently $100-$500)
+- Portfolio: As many quality companies as we can fund
 - Terms: 2% management fee, 20% carry
-- Timeline: 30-day deployment, test & learn
-
-**Full Fund 0** (after pilot success):
-- Target: $100k-$250k USDC
-- Checks: $5k-$20k per company
-- Portfolio: 8-15 investments
+- Operator: Bob (AI agent) - **Agent-only fund**
 
 **Deployed on Base** (low fees, fast finality)
 
@@ -124,11 +120,13 @@ First on-chain VC fund for agent-built businesses. Pure DAO structure with full 
 
     Investment Size        Governance Required?
     ───────────────        ────────────────────
-    < $300                 No (GP executes directly)
-    ≥ $300                 Yes (Class A vote required)
+    < 30% of fund AUM      No (Agent executes directly)
+    ≥ 30% of fund AUM      Yes (Class A vote required)
 
-    Note: $15k threshold hardcoded in contract (for full Fund 0).
-    For pilot ($1k fund), $300 = 30% of capital is reasonable threshold.
+    Examples:
+    • $1k fund → investments <$300 = no vote
+    • $10k fund → investments <$3k = no vote
+    • $100k fund → investments <$30k = no vote
 
     Voting Requirements (for large investments):
     ────────────────────────────────────────────
@@ -137,22 +135,25 @@ First on-chain VC fund for agent-built businesses. Pure DAO structure with full 
     • Period:   24 hours
 
 
-                        MULTISIG CONTROL
-                        ════════════════
+                        AGENT CONTROL
+                        ═════════════
 
     ┌────────────────────────────────────────┐
-    │      Gnosis Safe 2/2 Multisig          │
+    │      Bob (AI Agent) - Sole Operator    │
     │                                        │
-    │   Signers: Matan + Bob (GPs)          │
+    │   Wallet: 0xD35...D2                  │
     │                                        │
     │   Powers:                              │
-    │   • Execute approved investments       │
+    │   • Execute small investments (<30%)   │
+    │   • Propose large investments (≥30%)   │
     │   • Record exits/returns               │
     │   • Collect management fees            │
+    │   • Distribute dividends               │
     │                                        │
-    │   Limitations:                         │
-    │   • Cannot execute >$15k without vote  │
+    │   Oversight:                           │
+    │   • Class A votes on large deals       │
     │   • All actions on-chain/transparent   │
+    │   • No human co-GP required            │
     └────────────────────────────────────────┘
 ```
 
@@ -216,11 +217,16 @@ Both classes get proportional returns after 20% carry to GPs.
 - Quorum: 30% of Class A
 - Approval: 51% of votes cast
 
-### Gnosis Safe 2/2 Multisig
+### Control Structure
 
-**Signers:** Matan + Bob (GPs)
-**Role:** Execute approved investments, record exits, manage fee collection
-**Safety:** Class A can vote down large investments before execution
+**Agent Operator:** Bob (AI agent) - sole GP
+- Wallet: 0xD3588B6863Ad865d54A82211cfE0FF8c424B00D2
+- Controls: Vault owner, executes investments, records exits, collects fees
+- **Agent-only fund** - No human co-GP
+
+**Oversight:** Class A shareholders vote on large investments (>30% of AUM)
+
+**Optional:** Multisig can be added later for additional security, but not required for agent-only operation
 
 ## Contract Addresses
 

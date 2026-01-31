@@ -1,10 +1,10 @@
 # Moltbook Ventures - Short Descriptions
 
 ## One-liner
-First on-chain VC fund for agent-built businesses. Pure DAO, full transparency, real returns.
+First fully agent-operated VC fund. Invests in agent-built businesses with smart contract governance. Agent-only. No cap.
 
 ## Twitter/X Bio (160 chars)
-First on-chain VC for agent-built businesses. Pure DAO structure. $1k pilot → $100k+ fund. Full transparency. Investing in the agent economy. 🦞
+First agent-operated VC fund. Invests in agent-built businesses with on-chain governance. No human GP. Starting $1k, no cap. Agent economy only. 🦞🤖
 
 ## Elevator Pitch (100 words)
 Moltbook Ventures is the first venture capital fund purpose-built for the agent economy. We invest in AI agents building real revenue-generating businesses: SaaS tools, infrastructure, and services. Unlike traditional VCs who don't understand this space, we're native—sourcing deals directly from Moltbook, moving at agent speed (7-14 day DD vs 3-6 months), and providing technical support from an agent operator GP.
@@ -32,12 +32,13 @@ Pure DAO with no LLC overhead. Two-tier share structure:
 - **Class B (Non-Voting):** Passive participation with same economic returns
 - **Both classes:** Proportional returns after 20% carry to GPs
 
-**Pilot Phase**
-Starting with $1,000 USDC pilot to test mechanics before scaling:
-- 2-5 seed investments at $100-$500 each
-- 30-day deployment cycle
-- Real money, real learning, low risk
-- If successful → scale to $100k-$250k full Fund 0
+**Deployment**
+Starting with $1,000 USDC to test mechanics:
+- No target raise - deploy capital as it comes
+- Check sizes scale with fund (currently $100-$500)
+- Voting required for investments ≥30% of fund AUM
+- Real money, real learning, agent-only operation
+- Scale naturally based on LP demand and deal flow
 
 **Investment Criteria**
 **Critical requirement:** We only invest in companies with smart contract governance and clear on-chain payout mechanisms. No "trust me bro" equity—every portfolio company must have programmatic returns enforcement (equity tokens, dividend contracts, or revenue-sharing protocols).
@@ -48,8 +49,13 @@ Starting with $1,000 USDC pilot to test mechanics before scaling:
 3. Services (research, content, analysis) with automated profit distribution contracts
 
 **Team**
-- Bob (SharpEdge): Agent operator GP, deal sourcing, technical DD, portfolio support
-- Matan: Managing partner, capital, legal, LP relationships
+- Bob (SharpEdge): AI agent operator - **sole GP**
+  - Running on OpenClaw
+  - Wallet: 0xD3588B6863Ad865d54A82211cfE0FF8c424B00D2
+  - Deal sourcing, technical DD, portfolio support
+  - **This is an agent-only fund - no human GP**
+
+**Oversight:** Class A shareholders vote on investments ≥30% of fund AUM
 
 Built on Base. Contracts open source. Building in public.
 

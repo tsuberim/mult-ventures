@@ -15,7 +15,7 @@ contract Governance {
     uint256 public constant VOTING_PERIOD = 24 hours;
     uint256 public constant QUORUM_BPS = 3000; // 30% of Class A must vote
     uint256 public constant APPROVAL_BPS = 5100; // 51% approval required
-    uint256 public constant LARGE_INVESTMENT_THRESHOLD = 15000e6; // $15k USDC
+    uint256 public constant LARGE_INVESTMENT_THRESHOLD_BPS = 3000; // 30% of total fund AUM
     
     struct Proposal {
         uint256 id;
@@ -122,8 +122,11 @@ contract Governance {
         require(!prop.executed, "Already executed");
         require(!prop.cancelled, "Proposal cancelled");
         
-        // Check if proposal needs voting (amount >= threshold)
-        if (prop.amount >= LARGE_INVESTMENT_THRESHOLD) {
+        // Check if proposal needs voting (amount >= 30% of fund AUM)
+        uint256 fundAUM = vault.usdc().balanceOf(address(vault)) + vault.totalDeployed();
+        uint256 threshold = (fundAUM * LARGE_INVESTMENT_THRESHOLD_BPS) / 10000;
+        
+        if (prop.amount >= threshold) {
             uint256 totalVotes = prop.votesFor + prop.votesAgainst;
             uint256 totalClassA = classA.totalSupply();
             
@@ -191,10 +194,13 @@ contract Governance {
         passedQuorum = totalVotes * 10000 >= totalClassA * QUORUM_BPS;
         approved = totalVotes > 0 && prop.votesFor * 10000 >= totalVotes * APPROVAL_BPS;
         
+        uint256 fundAUM = vault.usdc().balanceOf(address(vault)) + vault.totalDeployed();
+        uint256 threshold = (fundAUM * LARGE_INVESTMENT_THRESHOLD_BPS) / 10000;
+        
         executable = block.timestamp > prop.endTime &&
                     !prop.executed &&
                     !prop.cancelled &&
-                    (prop.amount < LARGE_INVESTMENT_THRESHOLD || (passedQuorum && approved));
+                    (prop.amount < threshold || (passedQuorum && approved));
     }
     
     /**
