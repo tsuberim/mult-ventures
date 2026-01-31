@@ -235,10 +235,11 @@ Both classes get proportional returns after 20% carry to GPs.
 ## Contract Addresses
 
 **Ethereum Sepolia (Testnet):**
-- FundVault: [`0x416D836482D020fC1b7c556Ff31a003fBD4f244e`](https://sepolia.etherscan.io/address/0x416D836482D020fC1b7c556Ff31a003fBD4f244e)
-- Governance: [`0x6f185Ba44CD03B64047D5d3583A8869b3a16db2F`](https://sepolia.etherscan.io/address/0x6f185Ba44CD03B64047D5d3583A8869b3a16db2F)
-- Class A (MVLP-A): `0xDDdCA87C1e93820a76DFD14ECA2A87F0528F328A`
-- Class B (MVLP-B): `0x3BFcc1dB9F04CEcacc990d8742bB3Fbf3323ff8b`
+- FundVault: [`0x8bf67E2809ef8F09D6A580b4b1873fE5c4bDA6Fc`](https://sepolia.etherscan.io/address/0x8bf67E2809ef8F09D6A580b4b1873fE5c4bDA6Fc)
+- Governance: [`0xe8A74a2946E11b5E8d1d8be69E9d9B34124f1B37`](https://sepolia.etherscan.io/address/0xe8A74a2946E11b5E8d1d8be69E9d9B34124f1B37)
+- Class A (MVLP-A): `0xd4Ce68DE183587a069Cf6857DCbDACFC943e4959`
+- Class B (MVLP-B): `0xA2099816aB9B3629d8eFa3529F1c397DEa14ca9A`
+- Deployer: `0xD3588B6863Ad865d54A82211cfE0FF8c424B00D2` (Bob - owns 100 initial Class A shares)
 
 **Mainnet:**
 - TBD (deploying after testnet validation)
